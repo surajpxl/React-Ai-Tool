@@ -18,7 +18,7 @@ function App() {
       body: JSON.stringify(payload),
     })
     response  = await response.json()
-    // console.log(response.candidates[0].content.parts[0].text);
+    console.log(response.candidates[0].content.parts[0].text);
     setResult(response.candidates[0].content.parts[0].text);
   }
 
