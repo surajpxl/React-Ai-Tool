@@ -37,14 +37,14 @@ function App() {
 
       <div className='col-span-4 p-10'>
         <div className='container h-110 overflow-scroll' style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          <div className='text-white'>
+          <div className='text-zinc-300'>
             <ul>
-            {/*  {result} */}
-            {
-            result && result.map((item, index) => (
-             <li className='text-left p-1'> <Answer ans={item} key={index}/></li>
-            ))
-            }
+              {/*  {result} */}
+              {
+                result && result.map((item, index) => (
+                  <li key={index} className='text-left p-1'> <Answer ans={item} totalResult={result.length} index={index} /></li>
+                ))
+              }
             </ul>
           </div>
         </div>
