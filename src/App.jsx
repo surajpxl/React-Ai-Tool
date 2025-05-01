@@ -5,39 +5,30 @@ import Answer from './components/Answers'
 
 function App() {
   const [question, setQuestion] = useState('')
-  const [result, setResult] = useState([])
+  const [result, setResult] = useState(undefined)
+
+  const payload = {
+    "contents": [{
+      "parts": [{ "text": question }]
+    }]
+  }
 
   const askQuestion = async () => {
-    if (!question.trim()) return;
-  
-    const payload = {
-      "contents": [{
-        "parts": [{ "text": question }]
-      }]
-    };
-  
-    try {
-      let response = await fetch(URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload),
-      });
-  
-      response = await response.json();
-  
-      let dataString = response.candidates[0].content.parts[0].text;
-      dataString = dataString.split("* ").map(item => item.trim());
-  
-      setResult(question, dataString);
-      console.log(question);
-    } catch (error) {
-      console.error("Error fetching answer:", error);
-    }
-    
-  };
-  
+    let response = await fetch(URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    })
+    response = await response.json()
+    let dataString = response.candidates[0].content.parts[0].text;
+    dataString = dataString.split("* ")
+    dataString = dataString.map((item) => item.trim())
+
+
+
+    console.log(dataString);
+    setResult(dataString);
+  }
+
   return (
     <div className='grid grid-cols-5 h-screen text-center'>
 
@@ -51,7 +42,7 @@ function App() {
               {/*  {result} */}
               {
                 result && result.map((item, index) => (
-                  <li key={index+Math.random()} className='text-left p-1'> <Answer ans={item} totalResult={result.length} index={index} /></li>
+                  <li key={index} className='text-left p-1'> <Answer ans={item} totalResult={result.length} index={index} /></li>
                 ))
               }
             </ul>
