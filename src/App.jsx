@@ -5,7 +5,7 @@ import Answer from './components/Answers'
 
 function App() {
   const [question, setQuestion] = useState('')
-  const [result, setResult] = useState(undefined)
+  const [result, setResult] = useState([])
 
   const askQuestion = async () => {
     if (!question.trim()) return;
@@ -30,8 +30,8 @@ function App() {
       let dataString = response.candidates[0].content.parts[0].text;
       dataString = dataString.split("* ").map(item => item.trim());
   
-      setResult(dataString);
-      console.log(dataString);
+      setResult(question, dataString);
+      console.log(question);
     } catch (error) {
       console.error("Error fetching answer:", error);
     }
@@ -51,7 +51,7 @@ function App() {
               {/*  {result} */}
               {
                 result && result.map((item, index) => (
-                  <li key={index} className='text-left p-1'> <Answer ans={item} totalResult={result.length} index={index} /></li>
+                  <li key={index+Math.random()} className='text-left p-1'> <Answer ans={item} totalResult={result.length} index={index} /></li>
                 ))
               }
             </ul>
