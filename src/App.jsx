@@ -7,28 +7,37 @@ function App() {
   const [question, setQuestion] = useState('')
   const [result, setResult] = useState(undefined)
 
-  const payload = {
-    "contents": [{
-      "parts": [{ "text": question }]
-    }]
-  }
-
   const askQuestion = async () => {
-    let response = await fetch(URL, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    })
-    response = await response.json()
-    let dataString = response.candidates[0].content.parts[0].text;
-    dataString = dataString.split("* ")
-    dataString = dataString.map((item) => item.trim())
-
-
-
-    console.log(dataString);
-    setResult(dataString);
-  }
-
+    if (!question.trim()) return;
+  
+    const payload = {
+      "contents": [{
+        "parts": [{ "text": question }]
+      }]
+    };
+  
+    try {
+      let response = await fetch(URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload),
+      });
+  
+      response = await response.json();
+  
+      let dataString = response.candidates[0].content.parts[0].text;
+      dataString = dataString.split("* ").map(item => item.trim());
+  
+      setResult(dataString);
+      console.log(dataString);
+    } catch (error) {
+      console.error("Error fetching answer:", error);
+    }
+    
+  };
+  
   return (
     <div className='grid grid-cols-5 h-screen text-center'>
 
