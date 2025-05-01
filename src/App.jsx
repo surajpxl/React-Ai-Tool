@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useId } from 'react'
 import { useState } from 'react'
 import { URL } from './constants'
 import Answer from './components/Answers'
 
 function App() {
   const [question, setQuestion] = useState('')
-  const [result, setResult] = useState([])
+  const [result, setResult] = useState(undefined)
+  const id = useId()
 
   const payload = {
     "contents": [{
@@ -18,7 +19,7 @@ function App() {
       method: 'POST',
       body: JSON.stringify(payload),
     })
-    response = await response.json()
+    response = await response.json();
     let dataString = response.candidates[0].content.parts[0].text;
     dataString = dataString.split("* ")
     dataString = dataString.map((item) => item.trim())
@@ -26,7 +27,7 @@ function App() {
 
 
     console.log(dataString);
-    setResult(question, dataString);
+    setResult(dataString);
   }
 
   return (
@@ -42,7 +43,7 @@ function App() {
               {/*  {result} */}
               {
                 result && result.map((item, index) => (
-                  <li key={index+Math.random()} className='text-left p-1'> <Answer ans={item} totalResult={result.length} index={index} /></li>
+                  <li key={index} className='text-left p-1'> <Answer ans={item} totalResult={result.length} index={index} /></li>
                 ))
               }
             </ul>
